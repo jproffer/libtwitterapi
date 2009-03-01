@@ -34,6 +34,7 @@
 								"featured"			=> 'http://twitter.com/statuses/featured.xml',
 								"friends_timeline"	=> 'http://twitter.com/statuses/friends_timeline', 		// do not add '.xml' or '/' to these api urls - 
 								"user_timeline"		=> 'http://twitter.com/statuses/user_timeline', 		// they are auto postpended in individual functions.
+								"destroy"			=> 'http://twitter.com/statuses/destroy',
 								"show"				=> 'http://twitter.com/statuses/show',
 								"users"				=> 'http://twitter.com/users',
 								"friends"			=> 'http://twitter.com/statuses/friends',
@@ -82,7 +83,12 @@
 			$text=urlencode($text);
 			$postargs="user=$user&text=$text";
 			return $this->process("{$this->api['messages']}/new.xml", $postargs );
-		}		
+		}
+
+		function DestroyMessage($id) {
+			$id=urlencode($id);
+			return $this->process("{$this->api['destroy']}/$id.xml","id=$id");
+		}
 /** =====================================================================================
  * retrieval functions  
  ** ===================================================================================== */
@@ -179,7 +185,6 @@
 		 * @return xml array, or FALSE on error
 		 */
 		function process($url, $postargs = FALSE) {
-			echo "url: $url";
 			if ($postargs) {
 				curl_setopt ( $this->ch, CURLOPT_POST, TRUE);
 				curl_setopt ( $this->ch, CURLOPT_POSTFIELDS, $postargs );
@@ -194,5 +199,4 @@
 			return $xml;
 		}
 	}
-	
 ?>
